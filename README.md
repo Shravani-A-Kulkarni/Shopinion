@@ -34,39 +34,39 @@ project-root/
 
 ### Home Page
 
-![Home Page](screenshots/HomePage.png)
+![Home Page](Screenshots/HomePage.png)
 
 ### About Us
 
-![About us Page](screenshots/AboutUs.png)
+![About us Page](Screenshots/AboutUs.png)
 
 ### Sign Up
 
-![Sign up Page](screenshots/SignUp.png)
+![Sign up Page](Screenshots/SignUp.png)
 
 ### Login
 
-![Login Page](screenshots/Login.png)
+![Login Page](Screenshots/Login.png)
 
 ### Admin Dashboard
 
-1. ![Admin Dashboard Page](screenshots/AdminDashboard.png)
+1. ![Admin Dashboard Page](Screenshots/AdminDashboard.png)
 2. Admin can add different filters
-   ![Admin Dashboard Page](screenshots/AdminFilter.png)
+   ![Admin Dashboard Page](Screenshots/AdminFilter.png)
 3. Admin can add user
-   ![Admin Dashboard Page](screenshots/AdminAddUser.png)
+   ![Admin Dashboard Page](Screenshots/AdminAddUser.png)
 4. Admin can add store
-   ![Admin Dashboard Page](screenshots/AdminAddStore.png)
+   ![Admin Dashboard Page](Screenshots/AdminAddStore.png)
 
 ### Owner Dashboard
 
-![Owner Dashboard Page](screenshots/OwnerDashboard.png)
+![Owner Dashboard Page](Screenshots/OwnerDashboard.png)
 
 ### User Dashboard
 
-![User Dashboard Page](screenshots/UserDashboard.png)
+![User Dashboard Page](Screenshots/UserDashboard.png)
 User can update password
-![User Dashboard Page](screenshots/UserChangePassword.png)
+![User Dashboard Page](Screenshots/UserChangePassword.png)
 
 ## Setup Instructions
 
