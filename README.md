@@ -15,19 +15,58 @@ Different types of users (e.g., Admin, User, Manager) see different dashboards a
 
 ## Tech Stack
 
-- **Frontend**: React.js / HTML, CSS, JavaScript
-- **Backend**: Node.js (Express) or Python (Flask/Django)
-- **Database**: MongoDB / MySQL / PostgreSQL
-- **Authentication**: JWT or Session-based
+- **Frontend**: React.js
+- **Backend**: Express.js
+- **Database**: MySQL
+- **Authentication**: JWT
 
 ## Project Structure
 
 project-root/
-├─ frontend/ # React or HTML views
-├─ backend/ # Express or Flask server
-├─ .gitignore
-├─ README.md
-└─ .env.example
+│-- backend/ # API & authentication logic
+│-- frontend/ # React frontend
+│-- screenshots/ # Project images
+│-- .gitignore
+│-- README.md
+|-- .env.example
+
+## Project UI
+
+### Home Page
+
+![Home Page](screenshots/HomePage.png)
+
+### About Us
+
+![About us Page](screenshots/AboutUs.png)
+
+### Sign Up
+
+![Sign up Page](screenshots/SignUp.png)
+
+### Login
+
+![Login Page](screenshots/Login.png)
+
+### Admin Dashboard
+
+1. ![Admin Dashboard Page](screenshots/AdminDashboard.png)
+2. Admin can add different filters
+   ![Admin Dashboard Page](screenshots/AdminFilter.png)
+3. Admin can add user
+   ![Admin Dashboard Page](screenshots/AdminAddUser.png)
+4. Admin can add store
+   ![Admin Dashboard Page](screenshots/AdminAddStore.png)
+
+### Owner Dashboard
+
+![Owner Dashboard Page](screenshots/OwnerDashboard.png)
+
+### User Dashboard
+
+![User Dashboard Page](screenshots/UserDashboard.png)
+User can update password
+![User Dashboard Page](screenshots/UserChangePassword.png)
 
 ## Setup Instructions
 
@@ -35,22 +74,18 @@ project-root/
 
    ```bash
    git clone https://github.com/Shravani-A-Kulkarni/Shopinion.git
-   cd role-based-login-system
+   cd Shopinion
 
    ```
 
 2. Install dependencies
 
-   # Backend
+   ### Backend
 
    cd backend
    npm install
 
-   # or for Python
-
-   pip install -r requirements.txt
-
-   # Frontend
+   ### Frontend
 
    cd frontend
    npm install
@@ -59,11 +94,11 @@ project-root/
 
 4. Run the app
 
-   # Backend
+   ### Backend
 
    node server.js or npx nodemon server.js(auto updates)
 
-   # Frontend
+   ### Frontend
 
    npm start
 
