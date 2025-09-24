@@ -27,6 +27,28 @@ function Layout({ user, onLogout, children }) {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    if (
+      !window.confirm(
+        "Are you sure you want to delete your account? This cannot be undone."
+      )
+    ) {
+      return;
+    }
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.delete(
+        "http://localhost:5000/api/auth/delete-account",
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert(res.data.message || "Account deleted successfully");
+      localStorage.clear();
+      onLogout();
+    } catch (err) {
+      alert(err.response?.data?.error || "Request failed");
+    }
+  };
+
   return (
     <div className="d-flex">
       {/* Sidebar */}
@@ -84,6 +106,15 @@ function Layout({ user, onLogout, children }) {
             </div>
           </form>
         )}
+
+        {/* Delete Account */}
+        <button
+          onClick={handleDeleteAccount}
+          className="btn btn-danger mt-2 w-100"
+        >
+          {" "}
+          Delete Account{" "}
+        </button>
       </div>
 
       {/* Main content */}
