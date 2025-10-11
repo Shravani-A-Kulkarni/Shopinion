@@ -3,31 +3,56 @@ const router = express.Router();
 const { Store, Rating, User } = require("../models");
 const auth = require("../middleware/auth");
 const role = require("../middleware/role");
+const Sentiment = require("sentiment");
+const sentiment = new Sentiment();
 
 // Submit or update a rating
-router.post("/:storeId", auth, async (req, res) => {
+router.post("/:storeId", auth, role(["user", "admin"]), async (req, res) => {
   try {
     const { storeId } = req.params;
-    const { rating } = req.body;
+    const { rating, reviewText } = req.body;
     const userId = req.user.id;
 
-    console.log("Incoming rating:", { userId, storeId, rating });
+    console.log("Incoming rating:", { userId, storeId, rating, reviewText });
 
+    let sentimentLabel = null;
+    let sentimentScore = null;
+
+    if (reviewText && reviewText.trim() !== "") {
+      const analysis = sentiment.analyze(reviewText);
+      sentimentScore = analysis.score;
+      sentimentLabel =
+        analysis.score > 0
+          ? "Positive"
+          : analysis.score < 0
+          ? "Negative"
+          : "Neutral";
+    }
     let userRating = await Rating.findOne({ where: { userId, storeId } });
 
     if (userRating) {
       console.log("Updating existing rating for user:", userId);
       userRating.rating = rating;
+      userRating.reviewText = reviewText;
+      userRating.sentimentLabel = sentimentLabel;
+      userRating.sentimentScore = sentimentScore;
       await userRating.save();
     } else {
       console.log("Creating new rating for user:", userId);
-      userRating = await Rating.create({ userId, storeId, rating });
+      userRating = await Rating.create({
+        userId,
+        storeId,
+        rating,
+        reviewText,
+        sentimentLabel,
+        sentimentScore,
+      });
     }
-
+    console.log("Rating saved: ", userRating.toJSON());
     res.json({ message: "Rating submitted", rating: userRating });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: err.message }); // ✅ fixed typo
+    return res.status(500).json({ error: err.message });
   }
 });
 
@@ -58,6 +83,7 @@ router.get("/:storeId", auth, role(["owner", "admin"]), async (req, res) => {
           attributes: ["id", "name", "email"],
         },
       ],
+      order: [["createdAt", "DESC"]],
     });
 
     const avg =
@@ -65,11 +91,34 @@ router.get("/:storeId", auth, role(["owner", "admin"]), async (req, res) => {
         ? ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length
         : null;
 
+    //Compute sentiment stattistics
+    const sentimentCounts = { positive: 0, negative: 0, neutral: 0 };
+    let sentimentSum = 0;
+    let sentimentCountForAvg = 0;
+
+    ratings.forEach((r) => {
+      const label = (r.sentimentLabel || "").toLowerCase();
+      if (label === "positive") sentimentCounts.positive++;
+      else if (label === "negative") sentimentCounts.negative++;
+      else sentimentCounts.neutral++;
+
+      if (r.sentimentScore !== null && r.sentimentScore !== undefined) {
+        sentimentSum += parseFloat(r.sentimentScore) || 0;
+        sentimentCountForAvg++;
+      }
+    });
+
+    const avgSentimentScore =
+      sentimentCountForAvg > 0 ? sentimentSum / sentimentCountForAvg : null;
+
     res.json({
       storeId: store.id,
       storeName: store.name,
       ratingsCount: ratings.length,
       averageRating: avg,
+      ratings,
+      sentimentCounts, // { positive, neutral, negative }
+      avgSentimentScore, // numeric or null
       ratings,
     });
   } catch (err) {

@@ -6,11 +6,10 @@ function UserDashboard({ token, onLogout, user }) {
   const [stores, setStores] = useState([]);
   const [search, setSearch] = useState("");
   const [ratings, setRatings] = useState({});
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [textReviews, setTextReviews] = useState({});
+  const [showReviewBox, setShowReviewBox] = useState({});
 
   const authHeader = () => ({ Authorization: `Bearer ${token}` });
 
@@ -71,53 +70,33 @@ function UserDashboard({ token, onLogout, user }) {
 
   const handleRatingSubmit = async (storeId) => {
     const ratingValue = Number(ratings[storeId]);
+    const reviewText = textReviews?.[storeId] || "";
+
     if (!ratingValue || ratingValue < 1 || ratingValue > 5) {
-      alert("Please enter a rating between 1 and 5.");
+      alert("Please enter ratings between 1 to 5");
       return;
     }
-
     try {
       await axios.post(
         `http://localhost:5000/api/ratings/${storeId}`,
-        { rating: ratingValue },
+        { rating: ratingValue, reviewText },
         { headers: authHeader() }
       );
-
       const detailRes = await axios.get(
         `http://localhost:5000/api/stores/${storeId}/details`,
         { headers: authHeader() }
       );
       const updated = detailRes.data;
-
       setStores((prev) =>
         prev.map((s) => (s.storeId === updated.storeId ? updated : s))
       );
-      alert("Rating submitted/updated!");
-    } catch (err) {
-      console.error("Rating error:", err);
-      alert(err.response?.data?.error || "Error submitting rating");
-    }
-  };
 
-  const handlePasswordUpdate = async (e) => {
-    e.preventDefault();
-    if (!oldPassword || !newPassword) {
-      alert("Fill both fields");
-      return;
-    }
-    try {
-      await axios.put(
-        "http://localhost:5000/api/auth/update-password",
-        { oldPassword, newPassword },
-        { headers: authHeader() }
-      );
-      alert("Password updated!");
-      setOldPassword("");
-      setNewPassword("");
-      setShowPasswordForm(false);
+      alert("Rating and review submitted/updated!");
+      setTextReviews({ ...textReviews, [storeId]: "" });
+      setShowReviewBox({ ...showReviewBox, [storeId]: false });
     } catch (err) {
-      console.error("Password update error:", err);
-      alert(err.response?.data?.error || "Failed to update password");
+      console.error("Error submitting review: ", err);
+      alert(err.response?.data?.error || "Error submitting rating/review");
     }
   };
 
@@ -199,6 +178,42 @@ function UserDashboard({ token, onLogout, user }) {
                     >
                       Submit
                     </button>
+                    <button
+                      className="btn btn-primary mt-2"
+                      onClick={() =>
+                        setShowReviewBox((prev) => ({
+                          ...prev,
+                          [store.storeId]: !prev[store.storeId],
+                        }))
+                      }
+                    >
+                      {showReviewBox[store.storeId]
+                        ? "Cancel"
+                        : "Write a Review"}
+                    </button>
+
+                    {showReviewBox[store.storeId] && (
+                      <div className="mt-2">
+                        <textarea
+                          className="form-control mb-2"
+                          rows="2"
+                          placeholder="Write your review..."
+                          value={textReviews[store.storeId] || ""}
+                          onChange={(e) =>
+                            setTextReviews({
+                              ...textReviews,
+                              [store.storeId]: e.target.value,
+                            })
+                          }
+                        />
+                        <button
+                          className="btn btn-success btn-sm"
+                          onClick={() => handleRatingSubmit(store.storeId)}
+                        >
+                          Submit Review
+                        </button>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}

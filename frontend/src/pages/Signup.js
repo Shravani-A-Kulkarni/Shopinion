@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -23,8 +24,8 @@ function Signup() {
     const { name, email, address, password } = formData;
 
     //Name
-    if (name.length < 20 || name.length > 60) {
-      return "Name must be between 20 and 60 characters";
+    if (name.length < 6 || name.length > 60) {
+      return "Name must be between 6 and 60 characters";
     }
 
     //Address
@@ -74,7 +75,13 @@ function Signup() {
 
   return (
     <div className="row justify-content-center">
-      <div className="col-md-6">
+      <p className="mt-1 text-left">
+        <Link to="/">🏠</Link>
+      </p>
+      <div
+        className="card shadow p-4 mt-5"
+        style={{ width: "400px", borderRadius: "12px" }}
+      >
         <h2 className="mb-3">Signup</h2>
         {error && <div className="alert alert-danger">{error}</div>}
         {success && <div className="alert alert-success">{success}</div>}
@@ -146,6 +153,9 @@ function Signup() {
           <button type="submit" className="btn btn-primary w-100">
             Signup
           </button>
+          <p className="mt-3">
+            Already have an account? <Link to="/login">Login</Link>
+          </p>
         </form>
       </div>
     </div>

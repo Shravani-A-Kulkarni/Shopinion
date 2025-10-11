@@ -24,8 +24,7 @@ function Dashboard() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        // debug
-        setUser(res.data.user); // should be res.data.user
+        setUser(res.data.user);
       })
       .catch((err) => {
         setError({ error: "Session expired. Login again" });

@@ -22,6 +22,18 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: { min: 1, max: 5 },
       },
+      reviewText: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      sentimentLabel: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      sentimentScore: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+      },
     },
     {
       sequelize,

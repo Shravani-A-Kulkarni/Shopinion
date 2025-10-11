@@ -10,14 +10,13 @@ function HomePage() {
       style={{
         minHeight: "100vh",
         width: "100%",
-        overflowX: "hidden", //to hide extra overflow on x axis
-        position: "absolute",
         background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
         color: "#fff",
         display: "flex",
         flexDirection: "column",
         margin: 0,
         padding: 0,
+        overflowX: "hidden",
       }}
     >
       {/* Navbar */}
