@@ -12,7 +12,7 @@ function OwnerStores() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        "http://localhost:5000/api/owner/stores/ratings",
+        `${process.env.REACT_APP_API_URL}/api/owner/stores/ratings`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -27,7 +27,7 @@ function OwnerStores() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        `http://localhost:5000/api/ratings/${storeId}`,
+        `${process.env.REACT_APP_API_URL}/api/ratings/${storeId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

@@ -20,13 +20,13 @@ function Dashboard() {
 
     // Fetch user profile from backend
     axios
-      .get("http://localhost:5000/api/auth/profile", {
+      .get(`${process.env.REACT_APP_API_URL}/api/auth/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         setUser(res.data.user);
       })
-      .catch((err) => {
+      .catch((error) => {
         setError({ error: "Session expired. Login again" });
         localStorage.removeItem("token");
         navigate("/login");

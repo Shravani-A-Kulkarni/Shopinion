@@ -17,16 +17,19 @@ function UserDashboard({ token, onLogout, user }) {
     const fetchAll = async () => {
       try {
         setLoading(true);
-        const listRes = await axios.get("http://localhost:5000/api/stores", {
-          headers: authHeader(),
-        });
+        const listRes = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/stores`,
+          {
+            headers: authHeader(),
+          }
+        );
         const storesList = listRes.data || [];
 
         const detailed = await Promise.all(
           storesList.map(async (s) => {
             try {
               const detailRes = await axios.get(
-                `http://localhost:5000/api/stores/${s.id}/details`,
+                `${process.env.REACT_APP_API_URL}/api/stores/${s.id}/details`,
                 { headers: authHeader() }
               );
               return detailRes.data;
@@ -78,12 +81,12 @@ function UserDashboard({ token, onLogout, user }) {
     }
     try {
       await axios.post(
-        `http://localhost:5000/api/ratings/${storeId}`,
+        `${process.env.REACT_APP_API_URL}/api/ratings/${storeId}`,
         { rating: ratingValue, reviewText },
         { headers: authHeader() }
       );
       const detailRes = await axios.get(
-        `http://localhost:5000/api/stores/${storeId}/details`,
+        `${process.env.REACT_APP_API_URL}/api/stores/${storeId}/details`,
         { headers: authHeader() }
       );
       const updated = detailRes.data;

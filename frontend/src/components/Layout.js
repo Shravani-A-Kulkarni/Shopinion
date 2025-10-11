@@ -13,7 +13,7 @@ function Layout({ user, onLogout, children }) {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.put(
-        "http://localhost:5000/api/auth/update-password",
+        "${process.env.REACT_APP_API_URL}/api/auth/update-password",
         { oldPassword, newPassword },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -38,7 +38,7 @@ function Layout({ user, onLogout, children }) {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.delete(
-        "http://localhost:5000/api/auth/delete-account",
+        "${process.env.REACT_APP_API_URL}/api/auth/delete-account",
         { headers: { Authorization: `Bearer ${token}` } }
       );
       alert(res.data.message || "Account deleted successfully");

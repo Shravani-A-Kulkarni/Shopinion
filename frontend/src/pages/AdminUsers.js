@@ -33,9 +33,12 @@ function AdminUsers() {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/admin/users", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/admin/users`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setUsers(res.data);
       setFilteredUsers(res.data);
     } catch (err) {
@@ -106,7 +109,7 @@ function AdminUsers() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "http://localhost:5000/api/admin/create-user",
+        `${process.env.REACT_APP_API_URL}/api/admin/create-user`,
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -135,7 +138,7 @@ function AdminUsers() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "http://localhost:5000/api/stores",
+        `${process.env.REACT_APP_API_URL}/api/stores`,
         storeData,
         {
           headers: { Authorization: `Bearer ${token}` },

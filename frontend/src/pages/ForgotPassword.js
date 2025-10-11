@@ -6,9 +6,12 @@ export default function ForgotPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:5000/api/auth/forgot-password", {
-      email,
-    });
+    await axios.post(
+      `${process.env.REACT_APP_API_URL}/api/auth/forgot-password`,
+      {
+        email,
+      }
+    );
     alert(
       "If that email is registered on this platform, then you will get the reset password link"
     );

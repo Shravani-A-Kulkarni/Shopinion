@@ -9,7 +9,7 @@ function StoreReviewsDashboard() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        "http://localhost:5000/api/admin/stores/reviews",
+        `${process.env.REACT_APP_API_URL}/api/admin/stores/reviews`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
