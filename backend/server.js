@@ -19,4 +19,8 @@ app.use("/api/ratings", require("./routes/rating"));
 
 // Start server
 const PORT = process.env.PORT || 5000;
+app.get("/", (req, res) => {
+  res.send("✅ Shopinion backend is running successfully!");
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
