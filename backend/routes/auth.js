@@ -12,7 +12,7 @@ const router = express.Router();
 router.post("/signup", async (req, res) => {
   try {
     const { name, email, password, address, role } = req.body;
-    console.log("📥 Signup request received:", req.body);
+    console.log("📥 Signup request:", req.body);
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -23,22 +23,25 @@ router.post("/signup", async (req, res) => {
         ? role.toLowerCase()
         : "user";
 
-    // ✅ Replace User.create() with actual SQL insert
-    const [result] = await db.query(
-      "INSERT INTO users (name, email, password, address, role) VALUES (?, ?, ?, ?, ?)",
-      [name, email, hashedPassword, address, finalRole]
-    );
+    // Create user in Sequelize model
+    const newUser = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      address,
+      role: finalRole,
+    });
 
-    console.log("✅ User inserted successfully:", result);
+    console.log("✅ User created successfully:", newUser.id);
 
     res.json({
       message: "User created successfully",
-      userId: result.insertId,
-      role: finalRole,
+      userId: newUser.id,
+      role: newUser.role,
     });
   } catch (err) {
-    console.error("❌ Error during signup:", err);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error("❌ Signup Error:", err);
+    res.status(500).json({ error: err.message });
   }
 });
 
