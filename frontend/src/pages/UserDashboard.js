@@ -193,7 +193,7 @@ function UserDashboard({ token, onLogout, user }) {
                     </button>
 
                     {showReviewBox[store.storeId] && (
-                      <div className="mt-2">
+                      <div className="mt-2 ml-2">
                         <textarea
                           className="form-control mb-2"
                           rows="2"
